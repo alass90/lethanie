@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lethanie — Agentic AI Research Company</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --black: #0A0A09;
+      --grey: #666666;
+      --grey-light: #999999;
+      --dim: #E5E5E5;
+      --off-white: #F5F5F5;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--black);
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* GRAIN */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none; z-index: 1000;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 28px 56px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.2em;
+      color: var(--black);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex; gap: 40px; list-style: none;
+    }
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      color: var(--grey);
+      text-decoration: none;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--black); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 56px 72px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-watermark {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(140px, 22vw, 340px);
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(0,0,0,0.08);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(56px, 9vw, 140px);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      opacity: 0;
+      animation: fadeUp 1s ease 0.5s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--grey);
+    }
+
+    .hero-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 56px;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.8s forwards;
+    }
+
+    .hero-tagline {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(12px, 1.1vw, 14px);
+      color: var(--grey);
+      max-width: 420px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .hero-scroll {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 10px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--grey-light);
+    }
+    .hero-scroll-line {
+      width: 1px; height: 56px;
+      background: linear-gradient(to bottom, var(--grey), transparent);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--dim), transparent);
+      margin: 0 56px;
+    }
+
+    /* SECTIONS */
+    section { padding: 112px 56px; }
+
+    .section-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 64px;
+      display: flex; align-items: center; gap: 20px;
+    }
+    .section-eyebrow::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: var(--dim);
+    }
+
+    /* MANIFESTO */
+    .manifesto { border-top: 1px solid var(--dim); }
+
+    .manifesto-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 96px;
+    }
+
+    .manifesto-left h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(40px, 5vw, 72px);
+      line-height: 1;
+      color: var(--black);
+    }
+    .manifesto-left h2 em {
+      font-style: italic;
+      color: var(--grey);
+    }
+
+    .manifesto-right {
+      display: flex; flex-direction: column; gap: 28px;
+    }
+
+    .manifesto-right p {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(15px, 1.25vw, 18px);
+      color: #333333;
+      line-height: 1.85;
+    }
+
+    .manifesto-right p strong {
+      color: var(--black);
+      font-weight: 400;
+    }
+
+    .manifesto-right p em {
+      font-style: italic;
+      color: var(--grey);
+    }
+
+    .manifesto-pull {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(22px, 2.8vw, 40px);
+      color: var(--black);
+      line-height: 1.25;
+      border-top: 1px solid var(--dim);
+      padding-top: 40px;
+      margin-top: 16px;
+      font-style: italic;
+    }
+
+    /* STATE */
+    .state { border-top: 1px solid var(--dim); background: var(--bg); }
+
+    .state-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      margin-top: 0;
+    }
+
+    .state-card {
+      background: var(--off-white);
+      padding: 52px 48px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+
+    .state-card-status {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 0.3em;
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .state-card-status .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+    .dot-green { background: #22c55e; }
+    .dot-red { background: #ef4444; }
+    .dot-amber { background: #f59e0b; }
+
+    .state-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(20px, 2vw, 28px);
+      color: var(--black);
+      line-height: 1.2;
+    }
+
+    .state-card p {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px; color: var(--grey);
+      line-height: 1.8; font-weight: 300;
+    }
+
+    /* PRODUCT */
+    .product { border-top: 1px solid var(--dim); }
+
+    .product-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 0;
+    }
+
+    .product-main {
+      background: #F8F8F8;
+      padding: 72px 64px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      min-height: 480px;
+    }
+
+    .product-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(80px, 10vw, 140px);
+      letter-spacing: 0.04em;
+      color: var(--black);
+      line-height: 1;
+    }
+
+    .product-desc {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px; color: var(--grey);
+      line-height: 1.9; font-weight: 300;
+      max-width: 360px;
+    }
+
+    .product-tag {
+      display: inline-block;
+      border: 1px solid var(--grey-light);
+      padding: 6px 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--grey);
+      margin-top: 24px; width: fit-content;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .product-tag:hover {
+      border-color: var(--black);
+      color: var(--black);
+    }
+
+    .product-research {
+      background: transparent;
+      border: 1px solid var(--dim);
+      padding: 72px 64px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      min-height: 480px;
+    }
+
+    .research-axes {
+      display: flex; flex-direction: column; gap: 24px;
+      margin-top: 24px;
+    }
+
+    .research-axis {
+      display: flex; gap: 20px; align-items: flex-start;
+    }
+
+    .axis-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; color: var(--grey-light);
+      letter-spacing: 0.1em; flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .axis-content h4 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 14px; color: var(--black);
+      margin-bottom: 4px; font-weight: 400;
+    }
+
+    .axis-content p {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; color: var(--grey);
+      line-height: 1.7; font-weight: 300;
+    }
+
+    /* BELIEFS */
+    .beliefs { border-top: 1px solid var(--dim); }
+
+    .beliefs-list {
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    .belief-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 64px;
+      padding: 48px 0;
+      border-bottom: 1px solid var(--dim);
+      align-items: start;
+    }
+
+    .belief-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--grey);
+      padding-top: 6px;
+    }
+
+    .belief-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(16px, 1.4vw, 20px);
+      color: #333333;
+      line-height: 1.7;
+    }
+
+    .belief-text strong {
+      color: var(--black); font-weight: 400;
+    }
+
+    /* JOIN */
+    .join {
+      border-top: 1px solid var(--dim);
+      padding: 140px 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 96px;
+      align-items: center;
+    }
+
+    .join-left h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(48px, 7vw, 100px);
+      line-height: 1;
+      color: var(--black);
+      letter-spacing: -0.02em;
+    }
+
+    .join-left h2 em {
+      font-style: italic; color: var(--grey);
+    }
+
+    .join-right {
+      display: flex; flex-direction: column; gap: 40px;
+    }
+
+    .join-right p {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px; color: var(--grey);
+      line-height: 1.9; font-weight: 300;
+    }
+
+    .join-roles {
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+
+    .join-role {
+      border: 1px solid var(--dim);
+      padding: 8px 18px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--grey);
+    }
+
+    .join-cta {
+      display: inline-flex; align-items: center; gap: 16px;
+      border: 1px solid var(--black);
+      padding: 18px 40px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--black);
+      text-decoration: none;
+      transition: all 0.4s ease;
+      position: relative; overflow: hidden;
+      width: fit-content;
+    }
+
+    .join-cta::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--black);
+      transform: translateX(-100%);
+      transition: transform 0.4s ease;
+      z-index: -1;
+    }
+
+    .join-cta:hover { color: var(--bg); }
+    .join-cta:hover::before { transform: translateX(0); }
+
+    /* INTELLECTUAL HONESTY */
+    .honesty {
+      border-top: 1px solid var(--dim);
+      padding: 80px 56px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 96px;
+    }
+
+    .honesty-left {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--grey);
+    }
+
+    .honesty-right p {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px; color: var(--grey);
+      line-height: 1.9; font-weight: 300;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--dim);
+      padding: 32px 56px;
+      display: flex;
+      justify-content: space-between; align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16px; letter-spacing: 0.2em;
+      color: var(--grey-light); text-transform: uppercase;
+    }
+
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; color: var(--grey-light);
+      letter-spacing: 0.1em;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scaleY(1); }
+      50% { opacity: 0.4; transform: scaleY(0.6); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 20px 28px; }
+      .hero, section { padding-left: 28px; padding-right: 28px; }
+      .divider { margin: 0 28px; }
+      .manifesto-layout { grid-template-columns: 1fr; gap: 48px; }
+      .state-grid { grid-template-columns: 1fr; }
+      .product-hero { grid-template-columns: 1fr; }
+      .belief-item { grid-template-columns: 1fr; gap: 16px; }
+      .join { grid-template-columns: 1fr; gap: 48px; }
+      .honesty { grid-template-columns: 1fr; gap: 32px; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Lethanie</div>
+    <ul class="nav-links">
+      <li><a href="#research">Research</a></li>
+      <li><a href="https://talosrun.com" target="_blank">Talos</a></li>
+      <li><a href="lethanie-manifeste.html">Manifest</a></li>
+      <li><a href="mailto:hello@lethanie.com">Join</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-watermark">LETHANIE</div>
+    <div class="hero-label">Agentic AI Research Company — Founded in 2025</div>
+    <h1 class="hero-title">
+      Intent<br/>
+      to <em>Action.</em>
+    </h1>
+    <div class="hero-bottom">
+      <p class="hero-tagline">
+        We are building in the middle of the most consequential transition in AI history. Not before it. Not after it. In the middle — which is the hardest moment, and the most important.
+      </p>
+      <div class="hero-scroll">
+        <div class="hero-scroll-line"></div>
+        <span>Scroll</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto" id="research">
+    <div class="section-eyebrow">01 — Our Position</div>
+    <div class="manifesto-layout reveal">
+      <div class="manifesto-left">
+        <h2>Why<br/>we <em>exist.</em></h2>
+      </div>
+      <div class="manifesto-right">
+        <p>
+          We believe autonomous AI agents represent the most consequential technical transition of this decade. Not because the capability question has been solved — it largely has. But because the harder question, the one that truly determines whether this transition goes well, has barely been asked.
+        </p>
+        <p>
+          <strong>How do you build agents that reliably do what they're supposed to do, at the scale the world now demands?</strong>
+        </p>
+        <p>
+          If powerful agentic AI is being deployed anyway — and it is, at a pace that has outpaced every governance framework ever written for it — then the question isn't whether agents get built. The question is whether anyone does the foundational work to make them <em>trustworthy.</em> We believe most don't. We intend to.
+        </p>
+        <div class="manifesto-pull">
+          "The competition is no longer about models. It's about systems."
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- STATE OF THE FIELD -->
+  <section class="state" id="state">
+    <div class="section-eyebrow">02 — State of the Field, April 2026</div>
+    <div class="state-grid reveal">
+
+      <div class="state-card">
+        <div class="state-card-status">
+          <span class="dot dot-green"></span>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:#22c55e;">Solved</span>
+        </div>
+        <h3>Agents work in production</h3>
+        <p>A generation of agents demonstrates that AI systems can write code, manage files, browse the web, and operate autonomously. The shift from language to action is reality, not a lab promise.</p>
+      </div>
+
+      <div class="state-card">
+        <div class="state-card-status">
+          <span class="dot dot-red"></span>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:#ef4444;">Unsolved</span>
+        </div>
+        <h3>True multi-agent coordination</h3>
+        <p>Two papers from March 2026 prove mathematically that without genuinely new information, adding agents cannot outperform a single well-designed agent — and often does worse. The "Communication-Reasoning Gap" is real.</p>
+      </div>
+
+      <div class="state-card">
+        <div class="state-card-status">
+          <span class="dot dot-red"></span>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:#ef4444;">Unsolved</span>
+        </div>
+        <h3>Reliable agent evaluation</h3>
+        <p>Solo.io launched an entire framework in March 2026 to address what they call "the biggest unsolved problem in agentic AI." DARPA launched the MATHBAC program on April 7, 2026 — six days ago.</p>
+      </div>
+
+      <div class="state-card">
+        <div class="state-card-status">
+          <span class="dot dot-amber"></span>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:#f59e0b;">New in 2026</span>
+        </div>
+        <h3>Agent washing</h3>
+        <p>Refactored automations wearing the costume of autonomy. Gartner projects that over 40% of agentic AI projects will be cancelled by 2027. This is not a market problem. It's an intellectual integrity problem.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PRODUCT -->
+  <section class="product" id="product">
+    <div class="section-eyebrow">03 — What We're Building</div>
+    <div class="product-hero reveal">
+
+      <div class="product-main">
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;color:var(--grey);text-transform:uppercase;margin-bottom:16px;">Flagship Product</div>
+          <div class="product-name">TALOS</div>
+        </div>
+        <div>
+          <p class="product-desc">
+            A general-purpose autonomous AI agent designed to receive an intent and manage execution — research, analysis, code, deployment, coordination — over long horizons and with real reliability. Talos is also a research instrument: every production interaction generates scientific data on agent failure points.
+          </p>
+          <a href="https://talosrun.com" target="_blank" class="product-tag">In Development — Q2 2025</a>
+        </div>
+      </div>
+
+      <div class="product-research">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;color:var(--grey);text-transform:uppercase;">Research Agenda</div>
+        <div class="research-axes">
+          <div class="research-axis">
+            <span class="axis-num">01</span>
+            <div class="axis-content">
+              <h4>Agent Evaluation</h4>
+              <p>Rigorous methods to measure reliability, honesty, and controllability under diverse conditions.</p>
+            </div>
+          </div>
+          <div class="research-axis">
+            <span class="axis-num">02</span>
+            <div class="axis-content">
+              <h4>Multi-Agent Coordination</h4>
+              <p>Architectural approaches resistant to error propagation and false consensus.</p>
+            </div>
+          </div>
+          <div class="research-axis">
+            <span class="axis-num">03</span>
+            <div class="axis-content">
+              <h4>Alignment Under Autonomy</h4>
+              <p>Maintaining agent alignment across novel environments and extended horizons.</p>
+            </div>
+          </div>
+          <div class="research-axis">
+            <span class="axis-num">04</span>
+            <div class="axis-content">
+              <h4>Interpretability for Action</h4>
+              <p>Understanding why agents make their decisions, not just what they produce.</p>
+            </div>
+          </div>
+          <div class="research-axis">
+            <span class="axis-num">05</span>
+            <div class="axis-content">
+              <h4>Recovery from Failure</h4>
+              <p>Graceful failure, safe shutdown, and rollback for irreversible actions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- BELIEFS -->
+  <section class="beliefs" id="beliefs">
+    <div class="section-eyebrow">04 — What We Believe</div>
+    <div class="beliefs-list reveal">
+
+      <div class="belief-item">
+        <div class="belief-label">Reliability</div>
+        <p class="belief-text">The central problem of 2026 is not capabilities — it's <strong>reliability.</strong> Demos work. Prototypes are impressive. What doesn't work yet is making agents operate predictably in production, without catastrophic failure modes. Reliability isn't improvised. It's built scientifically.</p>
+      </div>
+
+      <div class="belief-item">
+        <div class="belief-label">Multi-Agent</div>
+        <p class="belief-text">The hypothesis that <strong>more agents equals more intelligence</strong> must be questioned. Without verified architectural choices, multi-agent systems can amplify errors rather than correct them, and produce apparent consensus rather than real synthesis. We build from this understanding, not in spite of it.</p>
+      </div>
+
+      <div class="belief-item">
+        <div class="belief-label">Evaluation</div>
+        <p class="belief-text">You cannot improve what you cannot measure. You cannot trust what you cannot evaluate. The absence of rigorous benchmarks means the entire field iterates on intuitions rather than evidence. We make evaluation a <strong>priority research axis,</strong> not a support function.</p>
+      </div>
+
+      <div class="belief-item">
+        <div class="belief-label">Governance</div>
+        <p class="belief-text">Only 30% of organizations today achieve satisfactory agentic governance. The competition in 2026 is no longer about models — it's about systems, about who can deploy agents with <strong>real accountability</strong> and auditable reasoning.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- JOIN -->
+  <section class="join" id="join">
+    <div class="join-left reveal">
+      <h2>Build<br/><em>with</em><br/>us.</h2>
+    </div>
+    <div class="join-right reveal">
+      <p>
+        We seek people who are simultaneously impatient and rigorous. Impatient because the transition happens with or without them. Rigorous because none of the problems we work on yield to speed alone.
+      </p>
+      <p>
+        We don't require a specific background. We require demonstrated depth: the ability to sit with a hard problem until it yields, to question consensus when evidence justifies it, and to document failures as rigorously as successes.
+      </p>
+      <div class="join-roles">
+        <div class="join-role">AI Researcher</div>
+        <div class="join-role">Agent Engineer</div>
+        <div class="join-role">ML Engineer</div>
+        <div class="join-role">Backend Engineer</div>
+        <div class="join-role">Product Designer</div>
+      </div>
+      <a href="mailto:hello@lethanie.com" class="join-cta">
+        Join Lethanie
+      </a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- INTELLECTUAL HONESTY -->
+  <section class="honesty">
+    <div class="honesty-left reveal">Note on<br/>Intellectual<br/>Honesty</div>
+    <div class="honesty-right reveal">
+      <p>
+        We write this in April 2026. The field evolves faster than any founding document can follow. Some of what we've written here will be obsolete within months. Some of our convictions will prove incorrect. We commit to updating this document continuously, not annually. When our understanding changes, we will say so, and we will say why. This is not standard practice for a founding document. We believe it should be.
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Lethanie</div>
+    <div class="footer-copy">© 2025 Lethanie — Agentic AI Research Company</div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 100);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => io.observe(r));
+
+    // Nav active state
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        const rect = s.getBoundingClientRect();
+        if (rect.top <= 100) current = s.getAttribute('id');
+      });
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    });
+  </script>
+</body>
+</html>

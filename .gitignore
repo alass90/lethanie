@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.gemini/
+dist/
+.env*
+*.log
+.DS_Store
+build/
+.vscode/
+package-lock.json
