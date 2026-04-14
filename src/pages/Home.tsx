@@ -392,7 +392,7 @@ export default function Home() {
             <a href="mailto:join@lethanie.com" className="join-cta">
               Join the team
             </a>
-            <a href="mailto:hello@lethanie.com" className="join-cta" style={{ borderOpacity: 0.5, color: 'var(--grey)', borderColor: 'var(--dim)' }}>
+            <a href="mailto:hello@lethanie.com" className="join-cta" style={{ color: 'var(--grey)', borderColor: 'var(--dim)' }}>
               Contact
             </a>
           </div>
